@@ -6,10 +6,15 @@ public class CoffeeMeNow {
             //SMALL
             //MEDIUM
             //LARGE
+        enum CoffeeSize{
+            TALL,
+            GRANDE,
+            VENTI
+        }
 
         //2. Declare and initialize a variable of type CoffeeSize to store a predefined coffee order.
-
+        CoffeeSize myOrder = CoffeeSize.VENTI;
         //3. Print the selected coffee size.
-
+        System.out.println("Selected coffee size: " + myOrder);
     }
 }

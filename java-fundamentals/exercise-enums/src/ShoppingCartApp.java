@@ -13,14 +13,26 @@ public class ShoppingCartApp {
         // Here are the options as per decisions made by the team:
             //Order status: pending, processing, shipped, delivered
             // Shipping status: standard, 2-day, overnight
-
+        enum OrderStatus{
+            pending,
+            processing,
+            shipped,
+            delivered
+        }
+        enum ShippingStatus{
+            standard,
+            TwoDay,
+            overnight
+        }
         //Assign variables to each of the elements from above.
         int productId = 1;
         int productCategory = 2;
         double productCost = 2.56;
         double productPrice = 4.99;
         int productQuantity = 78;
-        
+        OrderStatus orderStatus = OrderStatus.pending;
+        ShippingStatus shippingStatus = ShippingStatus.overnight;
+
         //Calculate the total cost of the product based on the
         // inventory.
         double totalCost = productCost * productQuantity;

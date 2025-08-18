@@ -3,6 +3,7 @@ package org.example.shoppingcart;
 /**
  * 1. Add business name and contact info.
  * 2. Add item description.
+ * Henok Ketema
  */
 
 public class ShoppingCartApp {
@@ -16,6 +17,10 @@ public class ShoppingCartApp {
 
     public static void main(String[] args) {
         System.out.println("Welcome to the shopping cart app!");
+        //New Strings
+        String businessName = "Henok's Online Store";
+        String contactInfo = "support@henok.com";
+        String item = "full size memory foam pillow";
 
         int productId = 1;
         int productCategory = 2;
@@ -40,8 +45,10 @@ public class ShoppingCartApp {
         System.out.println(OrderStatus.PROCESSING);
         System.out.println(OrderStatus.SHIPPED);
         System.out.println(OrderStatus.DELIVERED);
-
-
+        //printing the new strings
+        System.out.println(businessName);
+        System.out.println(contactInfo);
+        System.out.println(item);
 
         System.out.println("Bye");
     }

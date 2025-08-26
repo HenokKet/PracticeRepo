@@ -1,5 +1,6 @@
 package org.example.shoppingcart;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ShoppingCartApp {
@@ -15,22 +16,28 @@ public class ShoppingCartApp {
     String promoCode = "";
     int orderQuantity = 0;
 
-    // Prompt for tax exempt
-    System.out.println("Are you tax-exempt? (y/n)");
-    taxExempt = console.nextLine();
+    while (!confirm) {
+        // Prompt for tax exempt
+        System.out.println("Are you tax-exempt? (y/n)");
+        taxExempt = console.nextLine();
 
-    // Prompt for shipping
-    System.out.println("Shipping? (standard/overnight/twoday)");
-    shipping = console.nextLine();
+        // Prompt for shipping
+        System.out.println("Shipping? (standard/overnight/twoday)");
+        shipping = console.nextLine();
 
-    // Prompt for order quantity
-    System.out.println("Order quantity?");
-    orderQuantity = Integer.parseInt(console.nextLine());
+        // Prompt for order quantity
+        System.out.println("Order quantity?");
+        orderQuantity = Integer.parseInt(console.nextLine());
 
-    // Prompt for promo code
-    System.out.println("Promo code for free shipping?");
-    promoCode = console.nextLine();
+        // Prompt for promo code
+        System.out.println("Promo code for free shipping?");
+        promoCode = console.nextLine();
 
+        System.out.println("Confirm Order ? (y/n)");
+        if(console.nextLine().equalsIgnoreCase("y")){
+            confirm = true;
+        }
+    }
     // Print details
     System.out.println("\nDetails:");
     System.out.println("Tax-exempt: " + taxExempt);

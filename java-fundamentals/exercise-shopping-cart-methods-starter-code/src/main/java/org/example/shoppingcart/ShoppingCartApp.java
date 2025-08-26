@@ -1,5 +1,7 @@
 package org.example.shoppingcart;
 
+import java.util.Scanner;
+
 /**
  * Refactor the code to use the following methods:
  * 1. Display a list of choices from an array. Returns nothing. Needs an array
@@ -12,6 +14,8 @@ package org.example.shoppingcart;
  * Note: We will not create method(s) for calculating the total cost until we
  * learn more about Object-Oriented Programming and some additional data
  * structures.
+ *
+ * Henok Ketema
  */
 
 public class ShoppingCartApp {
@@ -31,35 +35,22 @@ public class ShoppingCartApp {
       int addressIndex = 0;
       int sizeIndex = 0;
       // Prompt for tax exempt
-      System.out.println("Are you tax-exempt? (y/n)");
-      taxExempt = console.nextLine();
+      taxExempt = promptUserForString("Are you tax-exempt? (y/n)");
 
       // Prompt for shipping address
-      for (int i = 0; i < addresses.length; i++) {
-        System.out.println((i + 1) + ". " + addresses[i]);
-      }
-      System.out.println("Shipping address?");
-      String address = console.nextLine();
-      addressIndex = Integer.parseInt(address);
+      displayChoices(addresses);
+      addressIndex = promptUserForInt("Shipping address?");
       // Prompt for shipping
-      System.out.println("Shipping? (standard/overnight/twoday)");
-      shipping = console.nextLine();
+      shipping = promptUserForString("Shipping? (standard/overnight/twoday)");
 
       // Prompt for order quantity
-      System.out.println("Order quantity?");
-      int orderQuantity = Integer.parseInt(console.nextLine());
-
+      int orderQuantity = promptUserForInt("Order quantity?");
       // Prompt for Size
-      for (int i = 0; i < sizes.length; i++) {
-        System.out.println((i + 1) + ". " + sizes[i]);
-      }
-      System.out.println("Size?");
-      String size = console.nextLine();
-      sizeIndex = Integer.parseInt(size);
+      displayChoices(sizes);
+      sizeIndex = promptUserForInt("Size?");
 
       // Prompt for promo code
-      System.out.println("Promo code for free shipping?");
-      promoCode = console.nextLine();
+      promoCode = promptUserForString("Promo code for free shipping?");
 
       // Print details
       System.out.println("\nDetails:");
@@ -75,4 +66,25 @@ public class ShoppingCartApp {
 
     System.out.println("Bye");
   }
+
+    // for loop which goes thru the string arrays
+    private static void displayChoices(String[] choices) {
+        for (int i = 0; i < choices.length; i++) {
+            System.out.println(i + 1 + ": " + choices[i]);
+        }
+    }
+
+    // prompts user for a string
+    private static String promptUserForString(String prompt) {
+        Scanner console = new Scanner(System.in);
+        System.out.println(prompt);
+        return console.nextLine();
+    }
+
+    // prompts user for an int
+    private static int promptUserForInt(String prompt) {
+        Scanner console = new Scanner(System.in);
+        System.out.println(prompt);
+        return Integer.parseInt(console.nextLine());
+    }
 }

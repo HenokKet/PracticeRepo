@@ -18,13 +18,22 @@ public class ShoppingCartApp {
     while (!confirm) {
       int addressIndex = 0;
       int sizeIndex = 0;
+      String address = null;
+      String size = null;
       // Prompt for tax exempt
 
       taxExempt = promptUserForString("Are you tax-exempt? (y/n)");
 
       // Prompt for shipping address
-      displayChoices(addresses);
-      addressIndex = promptUserForInt("Shipping address?");
+        while (address == null) {
+            try {
+                displayChoices(addresses);
+                addressIndex = promptUserForInt("Shipping address?") - 1;
+                address = addresses[addressIndex];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Please enter a valid menu option");
+            }
+        }
       // Prompt for shipping
       shipping = promptUserForString("Shipping? (standard/overnight/twoday)");
 
@@ -32,8 +41,15 @@ public class ShoppingCartApp {
       int orderQuantity = promptUserForInt("Order quantity?");
 
       // Prompt for Size
-      displayChoices(sizes);
-      sizeIndex = promptUserForInt("Size?");
+        while (size == null) {
+            try {
+                displayChoices(sizes);
+                sizeIndex = promptUserForInt("Size?") - 1;
+                size = sizes[sizeIndex];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Please enter a valid menu option");
+            }
+        }
 
       // Prompt for promo code
       promoCode = promptUserForString("Promo code for free shipping?");
@@ -41,9 +57,9 @@ public class ShoppingCartApp {
       // Print details
       System.out.println("\nDetails:");
       System.out.println("Tax-exempt: " + taxExempt);
-      System.out.println("Address: " + addresses[addressIndex - 1]);
+      System.out.println("Address: " + address);
       System.out.println("Shipping: " + shipping);
-      System.out.println("Size: " + sizes[sizeIndex - 1]);
+      System.out.println("Size: " + size);
       System.out.println("Order quantity: " + orderQuantity);
       System.out.println("Promo code: " + promoCode);
       System.out.println("Confirm Order y/n");
@@ -70,7 +86,17 @@ public class ShoppingCartApp {
   // Method for prompt user for int
   private static int promptUserForInt(String prompt) {
     Scanner console = new java.util.Scanner(System.in);
-    System.out.println(prompt);
-    return Integer.parseInt(console.nextLine());
+    boolean isVaild = false;
+    int result = -1;
+    while (!isVaild){
+        System.out.println(prompt);
+        try {
+            result = Integer.parseInt(console.nextLine());
+            isVaild =true;
+        } catch (NumberFormatException e){
+            System.out.println("Please enter a vaild number");
+        }
+    }
+    return result;
   }
 }

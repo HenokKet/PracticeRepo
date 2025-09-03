@@ -2,7 +2,8 @@ public class GuessingGame {
     public static void main(String[] args) {
 
         ConsoleIO myIO = new ConsoleIO();
-        String name, favoriteColor, favoriteAnimal;
+
+        String favoriteColor, favoriteAnimal;
         int favoriteNumber;
         double cash;
 
@@ -10,27 +11,22 @@ public class GuessingGame {
 
         myIO.writeMessage("Please answer a series of questions.");
 
-        name = myIO.getInput("What is your name?");
+        String name = myIO.getInputWithDefault("What is your name? Press Enter if you dont want to tell me");
 
-        if (name == null || name.length() == 0) {
-            myIO.writeMessage("It's okay if you don't want to tell me your name.");
-            name = "Nobody";
-        }
+        favoriteColor = myIO.getNonNullEmptyString("What's your favorite color?");
 
-        favoriteColor = myIO.getInput("What's your favorite color?");
+        favoriteNumber = myIO.getIntegerInBetween("What's your favorite number?");
 
-        favoriteNumber = myIO.getInteger("What's your favorite number?");
-
-        if (favoriteNumber < 1111 || favoriteNumber > 9999) {
-            favoriteNumber =
-                    myIO.getIntegerInBetween(
-                            "I mean what is your favorite number between 1111 and 9999"
-                            , 1111, 9999);
-        }
+//        if (favoriteNumber < 1111 || favoriteNumber > 9999) {
+//            favoriteNumber =
+//                    myIO.getIntegerInBetween(
+//                            "I mean what is your favorite number between 1111 and 9999"
+//                            , 1111, 9999);
+//        }
 
         favoriteAnimal = myIO.getNonNullNonEmptyString("What is your favorite animal?");
 
-        cash = myIO.getMoney();
+        cash = myIO.getPositiveMoney();
 
         myIO.writeMessage("Thanks for playing my game!");
         myIO.writeMessage("Your name is: " + name);

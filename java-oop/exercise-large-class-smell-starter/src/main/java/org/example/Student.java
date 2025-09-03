@@ -1,51 +1,28 @@
 package org.example;
 
-public class Student {
-    private String firstName;
-    private String lastName;
-    private double GPA;
-    private String homeroomTeacherFirstName;
-    private String homeroomTeacherLastName;
+public class Student extends Person{
+    private double gpa;
+    private Teacher homeroomTeacher;
 
+    public Student() {}
 
-    public String getHomeroomTeacherLastName() {
-        return homeroomTeacherLastName;
-    }
-
-    public void setHomeroomTeacherLastName(String homeroomTeacherLastName) {
-        this.homeroomTeacherLastName = homeroomTeacherLastName;
-    }
-
-    public String getHomeroomTeacherFirstName() {
-        return homeroomTeacherFirstName;
-    }
-
-    public void setHomeroomTeacherFirstName(String homeroomTeacherFirstName) {
-        this.homeroomTeacherFirstName = homeroomTeacherFirstName;
+    public Student(String firstName, String lastName, double gpa, Teacher homeroomTeacher) {
+        super(firstName, lastName);
+        this.gpa = gpa;
+        this.homeroomTeacher = homeroomTeacher;
     }
 
     public double getGPA() {
-        return GPA;
+        return gpa;
+    }
+    public void setGPA(double gpa) {
+        this.gpa = gpa;
     }
 
-    public void setGPA(double GPA) {
-        this.GPA = GPA;
+    public Teacher getHomeroomTeacher() {
+        return homeroomTeacher;
     }
-
-    public String getLastName() {
-        return lastName;
+    public void setHomeroomTeacher(Teacher homeroomTeacher) {
+        this.homeroomTeacher = homeroomTeacher;
     }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
 }

@@ -1,27 +1,10 @@
 import java.util.Scanner;
 
 public class ConsoleIO {
-
     Scanner myScanner = new Scanner(System.in);
 
     public void writeMessage(String message) {
         System.out.println(message);
-    }
-
-    public int getInteger(String prompt) {
-        boolean goodInput = false;
-        int number = -1;
-
-        while(!goodInput) {
-            System.out.println(prompt);
-            try {
-                number = Integer.parseInt(myScanner.nextLine());
-                goodInput = true;
-            } catch(Exception e) {
-                System.out.println("Input a valid number");
-            }
-        }
-        return number;
     }
 
     public int getIntegerInBetween(String prompt, int min, int max) {
@@ -45,16 +28,10 @@ public class ConsoleIO {
         return number;
     }
 
-    public String getInput(String prompt) {
-        System.out.println(prompt);
-        return myScanner.nextLine();
-    }
-
     public String getInputWithDefault(String prompt, String defaultValue) {
         System.out.println(prompt);
         String result = myScanner.nextLine();
-        if (result == null || result.length() == 0) {
-            myIO.writeMessage("It's okay if you don't want to tell me your name.");
+        if (result == null || result.isEmpty()) {
             result = defaultValue;
         }
         return result;
@@ -68,7 +45,7 @@ public class ConsoleIO {
         while(!goodInput) {
             System.out.println(prompt);
             result = myScanner.nextLine();
-            if(result == null || result.length() <= 0) {
+            if(result == null || result.isEmpty()) {
                 System.out.println("Enter a valid response.");
             } else {
                 goodInput = true;
@@ -78,31 +55,15 @@ public class ConsoleIO {
         return result;
     }
 
-    public double getMoney() {
-        boolean goodInput = false;
-        double number = 0.0;
-
-        while(!goodInput) {
-            System.out.println("Enter the amount of cash on hand: ");
-            try {
-                number = Double.parseDouble(myScanner.nextLine());
-                goodInput = true;
-            } catch(Exception e) {
-                System.out.println("Input a valid number");
-            }
-        }
-        return number;
-    }
-
     public double getPositiveMoney() {
         boolean goodInput = false;
-        double number = 0.0;
+        double number = 0.00;
 
         while(!goodInput) {
             System.out.println("Enter the amount of cash on hand: ");
             try {
                 number = Double.parseDouble(myScanner.nextLine());
-                if(number > 0.0) {
+                if(number > 0.00) {
                     goodInput = true;
                 } else {
                     System.out.println("Enter a positive amount of money.");

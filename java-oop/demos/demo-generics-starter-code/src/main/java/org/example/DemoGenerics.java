@@ -27,7 +27,7 @@ public class DemoGenerics {
         Container<Integer> wholeNumberContainer = new Container<>();
 
         // Store a number inside the container.
-        wholeNumberContainer.set(42);
+        wholeNumberContainer.set(Integer.valueOf(42));
         // Retrieve and print the stored number.
         System.out.println("Number Stored in Container: " + wholeNumberContainer.get());
         // Step 3: Use an ArrayList to Store Orders

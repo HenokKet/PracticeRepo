@@ -11,8 +11,7 @@ import org.example.view.UI;
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
     public static void main( String[] args )
     {
         VendingMachine vm = new VendingMachineImpl();
@@ -22,7 +21,7 @@ public class App
         Product candyBar = new Product("Candy Bar", 1.00);
         Product soda = new Product("Soda", .50);
 
-        vm.loadProduct("A1", apple, 10);
+        vm.loadProduct("A1", apple, 2);
         vm.loadProduct("A2", candyBar, 10);
         vm.loadProduct("A3", soda, 10);
 

@@ -33,7 +33,7 @@ public class Main {
 
         //Bonus Challenge
         ArrayList<String> newStudents = new ArrayList<>();
-        
+
         newStudents.add("Jeff");
         newStudents.add("Tommy");
         newStudents.add("Kayla");

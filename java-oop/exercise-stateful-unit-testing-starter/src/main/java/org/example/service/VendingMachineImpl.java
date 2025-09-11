@@ -31,7 +31,7 @@ public class VendingMachineImpl implements VendingMachine {
 
     @Override
     public int getBinQuantity(String binId) {
-        return bins.get(binId).size();
+        return bins.get(binId).size()-1;
     }
 
     @Override
@@ -44,13 +44,13 @@ public class VendingMachineImpl implements VendingMachine {
             return result;
         }
 
-        if (bin.isEmpty()) {
+        if (getBinQuantity(binId) < 1 ) {
             result.setErrorMessage("Bin is empty");
             result.setSuccess(false);
             return result;
         }
 
-        Product product = bin.get(1);
+        Product product = bin.get(0);
 
         if (product.getPrice() > customerMoney) {
             result.setErrorMessage("Insufficient funds.  Please insert " + (product.getPrice() - customerMoney));
@@ -60,6 +60,7 @@ public class VendingMachineImpl implements VendingMachine {
 
         bin.remove(1);
         customerMoney -= product.getPrice();
+        moneyBin += product.getPrice();
 
         result.setPayload(product);
         result.setSuccess(true);
@@ -82,7 +83,7 @@ public class VendingMachineImpl implements VendingMachine {
     public void loadProduct(String binId, Product product, int quantity) {
         List<Product> products = new ArrayList<>();
         product.setBinId(binId);
-        for (int i = 1; i < quantity; i++) {
+        for (int i = 0; i <= quantity; i++) {
             products.add(Product.clone(product));
         }
 

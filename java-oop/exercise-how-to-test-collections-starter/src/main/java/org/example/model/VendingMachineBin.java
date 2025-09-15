@@ -17,10 +17,10 @@ public class VendingMachineBin {
     public void loadProduct(Product product) {
         products.add(product);
     }
-
+    //Issue is here, it should be getting from the first index not the second
     public Product vendProduct() {
-        Product result = products.get(1);
-        products.remove(1);
+        Product result = products.get(0);
+        products.remove(0);
 
         return result;
     }

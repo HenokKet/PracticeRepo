@@ -39,7 +39,18 @@ public class EncounterFileRepository implements EncounterRepository {
 
         return result;
     }
-
+    //Find by type
+    @Override
+    public List<Encounter> findByType(EncounterType type) throws DataAccessException {
+        List<Encounter> all = findAll();
+        ArrayList<Encounter> result = new ArrayList<>();
+        for (Encounter e : all) {
+            if (e.getType() == type) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
     @Override
     public Encounter add(Encounter encounter) throws DataAccessException {
         List<Encounter> all = findAll();
@@ -47,6 +58,19 @@ public class EncounterFileRepository implements EncounterRepository {
         all.add(encounter);
         writeAll(all);
         return encounter;
+    }
+    //Update
+    @Override
+    public boolean update(Encounter encounter) throws DataAccessException {
+        List<Encounter> all = findAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getEncounterId() == encounter.getEncounterId()) {
+                all.set(i, encounter);
+                writeAll(all);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

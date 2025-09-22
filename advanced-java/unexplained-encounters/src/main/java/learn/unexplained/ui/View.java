@@ -1,5 +1,6 @@
 package learn.unexplained.ui;
 
+import com.sun.net.httpserver.Headers;
 import learn.unexplained.domain.EncounterResult;
 import learn.unexplained.models.Encounter;
 import learn.unexplained.models.EncounterType;
@@ -46,11 +47,28 @@ public class View {
             }
         }
     }
+    //Uses same logic in printaAllEncounters but just printing 1
+    public void printEncounters(String header, List<Encounter> encounters) {
+        printHeader(header);
+        if (encounters == null || encounters.isEmpty()) {
+            System.out.println();
+            System.out.println("No encounters found.");
+        } else {
+            for (Encounter e : encounters) {
+                System.out.printf("%s. Type:%s, Occurrences:%s, When:%s, Desc:%s%n",
+                        e.getEncounterId(),
+                        e.getType(),
+                        e.getOccurrences(),
+                        e.getWhen(),
+                        e.getDescription());
+            }
+        }
+    }
 
     public void printResult(EncounterResult result) {
         if (result.isSuccess()) {
             if (result.getPayload() != null) {
-                System.out.printf("Encounter Id %s added.%n", result.getPayload().getEncounterId());
+                System.out.printf("Encounter Id %s .%n", result.getPayload().getEncounterId());
             }
         } else {
             printHeader("Errors");
@@ -58,6 +76,18 @@ public class View {
                 System.out.printf("- %s%n", msg);
             }
         }
+    }
+    //just used for delete
+    public void printDeleteResult(boolean success, int id) {
+        if (success) {
+            System.out.printf("Encounter Id %s deleted.%n", id);
+        } else {
+            System.out.printf("Encounter Id %s not found.%n", id);
+        }
+    }
+    //public method used to print in controller
+    public void info(String msg) {
+        System.out.println(msg);
     }
 
     public Encounter makeEncounter() {
@@ -68,6 +98,34 @@ public class View {
         encounter.setWhen(readRequiredString("When:"));
         encounter.setDescription(readRequiredString("Description:"));
         return encounter;
+    }
+
+    public Encounter editEncounter(Encounter original) {
+        printHeader("Edit Encounter");
+        //Uses same logic in addEncounter to edit encounter without readding it
+        String when = readRequiredString("When (" + original.getWhen() + "): ");
+        if (!when.isBlank()) original.setWhen(when);
+
+        String desc = readRequiredString("Description (" + original.getDescription() + "): ");
+        if (!desc.isBlank()) original.setDescription(desc);
+
+        String occStr = readRequiredString("Occurrences (" + original.getOccurrences() + "): ");
+        if (!occStr.isBlank()) {
+            try {
+                int occ = Integer.parseInt(occStr.trim());
+                if (occ > 0) original.setOccurrences(occ);
+                else System.out.println("Occurrences must be greater than 0. Keeping previous value.");
+            } catch (NumberFormatException ex) {
+                System.out.println("Not a valid number. Keeping previous value.");
+            }
+        }
+
+        String changeType = readRequiredString("Change type? (y/N): ").trim().toLowerCase();
+        if (changeType.startsWith("y")) {
+            original.setType(promptEncounterType());
+        }
+
+        return original;
     }
 
     private String readString(String message) {
@@ -86,7 +144,8 @@ public class View {
         return result;
     }
 
-    private int readInt(String message) {
+    //Made this public so I can use it in Controller
+    public int readInt(String message) {
         String input = null;
         int result = 0;
         boolean isValid = false;
@@ -116,11 +175,17 @@ public class View {
 
     private EncounterType readType() {
         int index = 1;
+        //added this print line for readability purposes
+        System.out.println("Select A Type");
         for (EncounterType type : EncounterType.values()) {
             System.out.printf("%s. %s%n", index++, type);
         }
         index--;
         String msg = String.format("Select Encounter Type [1-%s]:", index);
         return EncounterType.values()[readInt(msg, 1, index) - 1];
+    }
+    //public class which is used to call readtype in controller
+    public EncounterType promptEncounterType() {
+        return readType();
     }
 }

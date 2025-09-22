@@ -3,6 +3,7 @@ package learn.unexplained.domain;
 import learn.unexplained.data.DataAccessException;
 import learn.unexplained.data.EncounterRepository;
 import learn.unexplained.models.Encounter;
+import learn.unexplained.models.EncounterType;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,11 @@ public class EncounterService {
 
     public List<Encounter> findAll() throws DataAccessException {
         return repository.findAll();
+    }
+
+    //Find by type
+    public List<Encounter> findByType(EncounterType type) throws DataAccessException {
+        return repository.findByType(type);
     }
 
     public EncounterResult add(Encounter encounter) throws DataAccessException {
@@ -39,6 +45,30 @@ public class EncounterService {
         encounter = repository.add(encounter);
         result.setPayload(encounter);
         return result;
+    }
+
+    //Update
+    public EncounterResult update(Encounter encounter) throws DataAccessException {
+        EncounterResult result = validate(encounter);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        if (encounter.getEncounterId() <= 0) {
+            result.addErrorMessage("encounter id is required");
+            return result;
+        }
+        boolean ok = repository.update(encounter);
+        if (!ok) {
+            result.addErrorMessage("encounter id not found");
+            return result;
+        }
+        result.setPayload(encounter);
+        return result;
+    }
+    //delete
+    public boolean deleteById(int encounterId) throws DataAccessException {
+        return repository.deleteById(encounterId);
     }
 
     private EncounterResult validate(Encounter encounter) {

@@ -54,4 +54,52 @@ class EncounterFileRepositoryTest {
         assertEquals(4, actual.getEncounterId());
     }
 
+    @Test
+    void shouldFindByType() throws DataAccessException {
+        //Arrange + Act
+        List<Encounter> ufos = repository.findByType(EncounterType.UFO);
+        //Assert
+        assertEquals(1, ufos.size());
+        assertEquals(EncounterType.UFO, ufos.get(0).getType());
+        assertEquals(1, ufos.get(0).getEncounterId());
+    }
+
+    @Test
+    void shouldDelete() throws DataAccessException{
+        // Act
+        boolean success = repository.deleteById(2);
+        //Assert
+        assertTrue(success);
+        List<Encounter> all = repository.findAll();
+        assertEquals(2, all.size());
+        assertTrue(all.stream().noneMatch(e -> e.getEncounterId() == 2));
+    }
+
+    @Test
+    void shouldUpdate() throws DataAccessException{
+        // Arrange
+        Encounter updated = new Encounter(
+                2,
+                EncounterType.CREATURE,
+                "2020-02-02",
+                "updated description",
+                3
+        );
+        // Act
+        boolean success = repository.update(updated);
+        // Assert
+        assertTrue(success);
+        List<Encounter> all = repository.findAll();
+        assertEquals(3, all.size());
+        Encounter match = all.stream()
+                .filter(e -> e.getEncounterId() == 2)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(match);
+        assertEquals(EncounterType.CREATURE, match.getType());
+        assertEquals("2020-02-02", match.getWhen());
+        assertEquals("updated description", match.getDescription());
+        assertEquals(3, match.getOccurrences());
+    }
+
 }

@@ -5,9 +5,11 @@ import learn.unexplained.domain.EncounterResult;
 import learn.unexplained.domain.EncounterService;
 import learn.unexplained.models.Encounter;
 import learn.unexplained.models.EncounterType;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class Controller {
 
     private final EncounterService service;

@@ -2,11 +2,13 @@ package learn.unexplained.data;
 
 import learn.unexplained.models.Encounter;
 import learn.unexplained.models.EncounterType;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class EncounterFileRepository implements EncounterRepository {
 
     private static final String DELIMITER = ",";

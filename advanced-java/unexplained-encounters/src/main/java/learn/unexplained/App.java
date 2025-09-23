@@ -4,7 +4,11 @@ import learn.unexplained.data.EncounterFileRepository;
 import learn.unexplained.domain.EncounterService;
 import learn.unexplained.ui.Controller;
 import learn.unexplained.ui.View;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 
+@ComponentScan
+@PropertySource("classpath:data.properties")
 public class App {
 
     public static void main(String[] args) {

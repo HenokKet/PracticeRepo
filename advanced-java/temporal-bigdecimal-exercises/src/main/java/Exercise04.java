@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Exercise04 {
 
@@ -9,23 +10,36 @@ public class Exercise04 {
 
     // 1. add a, b, and c together and return the result
     BigDecimal add(BigDecimal a, BigDecimal b, BigDecimal c) {
-        return null;
+        return a.add(b.add(c));
     }
 
     // 2. divide a by b and return the result with only two decimal points
     BigDecimal divideWithTwoDecimalPlaces(BigDecimal a, BigDecimal b) {
-        return null;
+        return a.divide(b,2, RoundingMode.HALF_UP);
     }
 
     // 3. calculate the sum of elements in values and return it
     // with a scale of 4.
     BigDecimal sum(BigDecimal[] values) {
-        return null;
+        BigDecimal total = BigDecimal.ZERO;
+        for(BigDecimal v : values){
+            if(v != null){
+                total = total.add(v);
+            }
+        }
+        return total;
     }
 
     // 4. calculate the average of elements in values
     BigDecimal average(BigDecimal[] values) {
-        return null;
+        int count =0;
+        BigDecimal total = sum(values);
+        for(BigDecimal v : values){
+            if(v != null){
+                count++;
+            }
+        }
+        return total.divide(BigDecimal.valueOf(count),4,RoundingMode.HALF_UP);
     }
 
     /**
@@ -39,6 +53,9 @@ public class Exercise04 {
      * @return total interest earned (final balance - initial investment)
      */
     BigDecimal calculateInterest(BigDecimal investment, BigDecimal interestRate, int periods) {
-        return null;
+        BigDecimal onePlus = BigDecimal.ONE.add(interestRate);
+        BigDecimal factor = onePlus.pow(periods);
+        BigDecimal interest = investment.multiply(factor.subtract(BigDecimal.ONE));
+        return interest;
     }
 }

@@ -1,0 +1,11 @@
+-- SELECT [FIELDS] FROM [TABLE] WHERE [CONDITION] ORDER BY [FIELDS]
+
+SELECT 'Learning SQL is fun' AS output;
+
+SELECT "LEARNING SQL IS FUN";
+
+SELECT CONCAT('Learning SQL...', 'Dont you think?');
+
+SELECT 1234;
+
+SELECT 10 % 3;

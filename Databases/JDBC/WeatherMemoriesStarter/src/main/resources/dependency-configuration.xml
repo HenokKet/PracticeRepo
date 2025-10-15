@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"  xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd"> <context:component-scan base-package="learn.memories"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/memories"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Iggles2016!"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="userRepository" class="learn.memories.data.UserJdbcRepository">
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="memoryRepository" class="learn.memories.data.MemoryJdbcRepository">
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="memoryService" class="learn.memories.domain.MemoryService">
+        <constructor-arg ref="memoryRepository"/>
+        <constructor-arg ref="weatherService"/>
+    </bean>
+
+    <bean id="userService" class="learn.memories.domain.UserService">
+        <constructor-arg ref="userRepository"/>
+    </bean>
+
+
+
+    <bean id="io" class="learn.memories.ui.ConsoleIO"/>
+
+    <bean id="view" class="learn.memories.ui.View">
+        <constructor-arg ref="io"/>
+    </bean>
+
+    <bean class="learn.memories.ui.Controller">
+        <constructor-arg ref="view"/>
+        <constructor-arg ref="memoryService"/>
+        <constructor-arg ref="userService"/>
+    </bean>
+
+
+</beans>

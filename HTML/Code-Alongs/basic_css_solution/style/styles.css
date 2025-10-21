@@ -1,0 +1,23 @@
+h1 {
+    color: red;
+    text-align: center;
+}
+
+p {
+    margin:10px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.intro {
+    color: green;
+    font-size: 16px;
+}
+
+#myButton {
+    background-color: yellow;
+    border: 2px solid black;
+    padding: 10px;
+}

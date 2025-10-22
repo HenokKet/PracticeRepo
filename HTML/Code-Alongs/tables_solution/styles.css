@@ -1,0 +1,65 @@
+
+:root {
+    --border: #d0d7db;
+    --row-odd: #ffffff;
+    --row-even: #f6f7f8;
+    --header: #e6f6ea; /* light green */
+    --header-text: #0b4f2b;
+    --totals-bg: #eaf7ee;
+}
+
+/* Base table layout */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    margin-bottom: 1rem;
+}
+
+th, td {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+/* Header: light green professional look */
+thead th {
+    background-color: var(--header);
+    color: var(--header-text);
+    font-weight: 600;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #cdd6d9;
+}
+
+/* Alternating row shades (every other row) */
+tbody tr:nth-child(odd) {
+    background-color: var(--row-odd);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--row-even);
+}
+
+/* Hover highlight to aid scanning */
+tbody tr:hover {
+    background-color: #eef9f1;
+}
+
+/* Totals row at the bottom stands out */
+.totals {
+    font-weight: 700;
+    background-color: var(--totals-bg);
+    border-top: 2px solid #bfc9c7;
+}
+
+/* Make the page header look tidy */
+h1 {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1f3830;
+    margin-bottom: 0.5rem;
+}
+
+

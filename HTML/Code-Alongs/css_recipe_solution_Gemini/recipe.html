@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Chocolate Cake Recipe</title>
+    <!-- Load Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Custom colors for a chocolate/baking theme
+                    colors: {
+                        'primary-dark': '#4b2a1a', // Dark chocolate color
+                        'secondary-light': '#f5efe8', // Creamy background
+                        'accent-red': '#cc3333', // Subtle highlight for headings
+                    },
+                    fontFamily: {
+                        // Use Inter as the default font
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Ensures body uses the Inter font as configured */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-secondary-light min-h-screen p-4">
+
+    <!-- Main Recipe Container (Aesthetic Card) -->
+    <div class="max-w-5xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden my-8">
+
+        <!-- Header and Title Section -->
+        <header class="bg-primary-dark text-white p-8 text-center" id="header">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Delicious Chocolate Cake</h1>
+            <p class="mt-2 text-lg font-light opacity-80">The ultimate recipe for rich, moist, and unforgettable chocolate goodness.</p>
+        </header>
+
+        <!-- Main Content Grid for Image, Ingredients, and Instructions -->
+        <main class="p-6 md:p-12 lg:grid lg:grid-cols-3 lg:gap-12">
+            
+            <!-- Image (Column 1 on Desktop) -->
+            <section class="lg:col-span-1 mb-8 lg:mb-0">
+                <!-- Using a placeholder image with a dark background to fit the chocolate theme -->
+                <img 
+                    src="https://placehold.co/800x600/6f4e37/ffffff?text=Rich+Chocolate+Cake" 
+                    alt="A rich, delicious chocolate cake" 
+                    class="w-full h-auto object-cover rounded-xl shadow-lg transition duration-300 hover:shadow-xl hover:scale-[1.01]"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x300/4b2a1a/ffffff?text=Cake+Image';"
+                >
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-500 italic">Prep time: 20 min | Cook time: 30 min</p>
+                </div>
+            </section>
+
+            <!-- Recipe Details (Columns 2 & 3 on Desktop) -->
+            <div class="lg:col-span-2 space-y-10">
+
+                <!-- Ingredients Section -->
+                <section class="ingredients bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-inner">
+                    <h2 class="text-3xl font-bold text-accent-red mb-4 border-b-2 border-accent-red pb-2">
+                        Ingredients
+                    </h2>
+                    <ul class="list-none space-y-3 text-lg text-gray-700">
+                        <!-- Ingredients with checkmark icons and hover effect -->
+                        <li class="flex items-center p-2 rounded-lg transition duration-200 ease-in-out hover:bg-yellow-100/50 hover:text-primary-dark cursor-pointer">
+                            <span class="mr-3 text-xl text-primary-dark">✓</span> 1 cup granulated sugar
+                        </li>
+                        <li class="flex items-center p-2 rounded-lg transition duration-200 ease-in-out hover:bg-yellow-100/50 hover:text-primary-dark cursor-pointer">
+                            <span class="mr-3 text-xl text-primary-dark">✓</span> 1/2 cup unsweetened cocoa powder
+                        </li>
+                        <li class="flex items-center p-2 rounded-lg transition duration-200 ease-in-out hover:bg-yellow-100/50 hover:text-primary-dark cursor-pointer">
+                            <span class="mr-3 text-xl text-primary-dark">✓</span> 1 cup all-purpose flour (sifted)
+                        </li>
+                        <li class="flex items-center p-2 rounded-lg transition duration-200 ease-in-out hover:bg-yellow-100/50 hover:text-primary-dark cursor-pointer">
+                            <span class="mr-3 text-xl text-primary-dark">✓</span> 2 large eggs
+                        </li>
+                        <li class="flex items-center p-2 rounded-lg transition duration-200 ease-in-out hover:bg-yellow-100/50 hover:text-primary-dark cursor-pointer">
+                            <span class="mr-3 text-xl text-primary-dark">✓</span> 1/2 cup whole milk (room temperature)
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Instructions Section -->
+                <section class="instructions">
+                    <h2 class="text-3xl font-bold text-accent-red mb-4 border-b-2 border-accent-red pb-2">
+                        Instructions
+                    </h2>
+                    
+                    <ol class="list-decimal list-inside space-y-4 text-lg text-gray-800">
+                        <!-- Instructions broken down into clear, bolded steps -->
+                        <li class="pl-2">
+                            <strong class="text-primary-dark">Prepare:</strong> Preheat the oven to <span class="font-semibold">350°F (175°C)</span>. Generously grease and lightly flour a 9-inch round cake pan.
+                        </li>
+                        <li class="pl-2">
+                            <strong class="text-primary-dark">Combine Dry:</strong> In a large mixing bowl, whisk together the flour, sugar, and cocoa powder until thoroughly combined.
+                        </li>
+                        <li class="pl-2">
+                            <strong class="text-primary-dark">Add Wet:</strong> Add the eggs and milk to the dry ingredients. Stir using a whisk or electric mixer on low speed until the batter is just smooth.
+                        </li>
+                        <li class="pl-2">
+                            <strong class="text-primary-dark">Bake:</strong> Pour the batter evenly into the prepared pan. Bake for <span class="font-semibold">30 to 35 minutes</span>, or until a toothpick comes out clean.
+                        </li>
+                        <li class="pl-2">
+                            <strong class="text-primary-dark">Cool & Serve:</strong> Cool in the pan for 10 minutes, then invert onto a wire rack to cool completely. Frost and serve!
+                        </li>
+                    </ol>
+                </section>
+
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 p-6 text-center border-t border-gray-200">
+            <p class="text-gray-600 text-sm italic">Recipe adapted by <span class="font-semibold text-primary-dark">Chef John Doe</span>. Enjoy responsibly!</p>
+        </footer>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+h1 {
+    color: darkblue;
+    text-align: center;
+}
+
+h2 {
+    color: darkred;
+}
+
+p {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+.ingredients {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 2px solid #ddd;
+}
+
+.instructions {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#header {
+    background-color: #e0e0e0;
+    padding: 15px;
+}
+
+img {
+    height: 200px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+ul li:hover {
+    color: hsl(152, 76%, 36%);
+    cursor: pointer;
+}

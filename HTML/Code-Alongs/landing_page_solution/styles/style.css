@@ -1,0 +1,408 @@
+/* ==============================================
+   SECTION 1: Responsive Design Foundation
+   ============================================== 
+   
+   Key Concepts:
+   1. CSS Reset - Remove browser default margins/padding
+   2. Viewport Control - Use viewport units (vh/vw) for responsive sizing
+   3. Box Sizing - Include padding in width calculations
+   4. Fluid Measurements - Avoid fixed pixel values
+*/
+
+html, body {
+    /* CSS Reset: Start with a clean slate by removing default margins and padding.
+       This ensures consistent behavior across different browsers. */
+    margin: 0;
+    padding: 0;
+    
+    /* Viewport Control: Use viewport units to make the page responsive.
+       100vh = 100% of the viewport height
+       This ensures the page takes up the full screen height. */
+    height: 100vh;
+    
+    /* Fluid Width: Make the width responsive to the parent container.
+       Using percentages allows content to adapt to different screen sizes. */
+    width: 100%;
+    
+    /* Maximum Width Control: Prevent content from exceeding viewport width.
+       This is crucial for preventing horizontal scrolling. */
+    max-width: 100%;
+    
+    /* CRITICAL: Prevents horizontal and vertical scrolling in the default (desktop) view. */
+    overflow: hidden; 
+    
+    /* Base styles */
+    font-family: 'Press Start 2P', cursive;
+    background-color: rgb(218, 218, 218);
+    box-sizing: border-box; /* Include padding/border in element's total height/width */
+}
+
+/* ==============================================
+   SECTION 2: CSS Grid Layout (Desktop Default)
+   ============================================== */
+
+#container {
+    display: grid;
+    
+    /* Defines the layout areas and their placement on the grid */
+    grid-template-areas:
+        "header header header"
+        "nav nav nav"
+        "aside main main" /* aside takes 1 column, main takes 2 columns */
+        "footer footer footer";
+        
+    /* Defines column widths: 1 fraction for aside, 2 fractions for main (i.e., main is twice as wide as aside) */
+    grid-template-columns: 1fr 2fr 2fr;
+    
+    /* Defines row heights: auto for header/nav/footer (content-driven), 1fr for main (fills remaining vertical space) */
+    grid-template-rows: auto auto 1fr auto; 
+    
+    /* Relative spacing between grid items */
+    grid-gap: 1em; 
+    /* Relative padding around the entire container */
+    padding: 1em; 
+    
+    /* Ensure the container fills the parent element (body) exactly */
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* ==============================================
+   SECTION 3: Layout Area Styling
+   ============================================== */
+
+header {
+    grid-area: header;
+    text-align: center;
+    min-height: min-content;
+}
+
+nav {
+    grid-area: nav;
+    display: flex;
+    justify-content: space-around; /* Distributes buttons evenly */
+    align-items: center;
+    /* Relative horizontal padding */
+    padding: 0 1em;
+    /* Relative minimum height */
+    min-height: 8vh;
+}
+
+main {
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Important for containing content within the grid cell */
+    box-sizing: border-box;
+}
+
+/* Sidebar for Characters (aside) */
+aside {
+    grid-area: aside;
+    /* USER REQUEST: Remove all scrollbars from the aside content area */
+    overflow-y: hidden; 
+    overflow-x: hidden;
+    box-sizing: border-box;
+    /* Relative padding right */
+    padding-right: 0.5em; 
+    
+    /* Relative font size for the pixel-art font to fit names better in the narrow column */
+    font-size: 0.75em; 
+}
+
+footer {
+    grid-area: footer;
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    padding: 0.5em 0;
+    flex-shrink: 0; /* Prevents footer from being squeezed */
+}
+
+/* ==============================================
+   SECTION 4: Responsive Image Scaling
+   ============================================== */
+
+/* GLOBAL: Makes all images fluid and responsive by default */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Logo Scaling: Scales based on viewport height (vh) for large displays, but capped at 600px width. */
+.header-logo {
+    margin: 0.5em auto;
+    max-width: min(90%, 60em);
+    max-height: 12vh;
+}
+
+/* Main Content Image: Fills the entire main container */
+main > div.nes-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+}
+
+main img {
+    /* object-fit: contain ensures the image is entirely visible within its container, preserving its aspect ratio. */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+}
+
+/* Character List Item Layout */
+aside div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Pushes name to left, image to right */
+    margin-bottom: 0.5em;
+    padding: 0 0.5em;
+}
+
+/* Character Icons: Responsive and Fluid */
+aside div img {
+    /* Responsive sizing based on viewport height for proportional scaling */
+    width: 5vh;
+    height: 5vh;
+    
+    /* CRITICAL: Removed fixed min/max pixel constraints for full fluidity */
+    
+    object-fit: cover;
+    
+    /* CRITICAL: Prevents the image from shrinking below its calculated size in narrow columns */
+    flex-shrink: 0;
+}
+
+/* ==============================================
+   SECTION 5: Mobile Responsiveness (max-width: 768px)
+   ============================================== */
+
+/* ==============================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   
+   We use three main breakpoints for this design:
+   1. Tablet/Small Laptop (max-width: 768px)
+   2. Mobile Devices (max-width: 480px)
+   3. Narrow Mobile Devices (max-width: 350px)
+   
+   Best Practices:
+   - Start with mobile-first considerations
+   - Use relative units (em, rem, %, vh/vw)
+   - Minimize fixed pixel values
+   - Test at various screen sizes
+   ============================================== */
+
+@media screen and (max-width: 768px) {
+    /* Tablet/Small Laptop Breakpoint
+       
+       Key Changes at 768px:
+       1. Switch to single column layout
+       2. Enable vertical scrolling
+       3. Prevent horizontal overflow
+       4. Adjust spacing for touch interfaces */
+    
+    html, body {
+        /* Allow content to scroll vertically while preventing horizontal overflow */
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        
+        /* Ensure content stays within viewport bounds */
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Single column stack layout */
+    #container {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+        padding: 0.5em;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        
+        grid-template-areas:
+            "header"
+            "nav"
+            "main"
+            "aside"
+            "footer";
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+        grid-gap: 0.5em;
+    }
+    
+    /* Ensure all sections fit width */
+    header, nav, main, aside, footer {
+        width: 100%;
+        max-width: 100%;
+        padding: 0.5em;
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    /* Stack navigation buttons */
+    nav {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+    
+    nav button {
+        width: 100%;
+        margin: 0;
+    }
+    
+    /* Adjust sidebar */
+    aside {
+        font-size: 0.9em;
+    }
+
+    aside div {
+        padding: 0.25em;
+        margin-bottom: 0.25em;
+    }
+
+    main {
+        min-height: 40vh;
+    }
+    
+    /* Reduce container padding */
+    main > div.nes-container {
+        padding: 0.5em;
+    }
+    
+    /* Allow footer to wrap */
+    footer {
+        flex-wrap: wrap;
+        gap: 0.5em;
+    }
+}
+
+/* ==============================================
+   SECTION 6: Extra Small Device Responsiveness (max-width: 480px)
+   ============================================== */
+
+@media screen and (max-width: 480px) {
+    /* Mobile Device Breakpoint
+       
+       Key Responsive Design Principles:
+       1. Reduce text size for readability
+       2. Decrease spacing to maximize content area
+       3. Scale images proportionally
+       4. Adjust touch targets for better usability
+    */
+    
+    html, body {
+        /* Reduce base font size while maintaining readability
+           Using em units keeps text size relative to user preferences */
+        font-size: 0.85em;
+    }
+    
+    /* Responsive Image Scaling:
+       - Use viewport units (vh) for height to maintain proportion
+       - Set maximum width as percentage to ensure content fits
+       - Preserve aspect ratio with auto height */
+    .header-logo {
+        max-height: 8vh;
+        max-width: 90%;
+    }
+
+    /* Reduce spacing */
+    #container {
+        padding: 0.25em;
+        grid-gap: 0.25em;
+    }
+
+    nav button {
+        padding: 0.4em;
+    }
+
+    aside {
+        font-size: 0.8em;
+    }
+
+    aside div img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* ==============================================
+   SECTION 7: Narrow Mobile Devices (max-width: 350px)
+   ============================================== */
+
+@media screen and (max-width: 350px) {
+    /* Narrow Mobile Device Breakpoint (iPhone SE, Galaxy S8, etc.)
+       
+       Responsive Design Strategies for Very Small Screens:
+       1. Minimize whitespace while maintaining readability
+       2. Scale down UI elements proportionally
+       3. Ensure touch targets remain accessible (min 44px)
+       4. Prevent any horizontal scrolling
+       
+       Example devices this supports:
+       - iPhone SE (320px)
+       - Galaxy S8 (360px)
+       - Older Android devices
+    */
+    
+    html, body {
+        /* Further reduce font size while maintaining minimum readability */
+        font-size: 0.8em;
+        /* Hard cap on width to prevent overflow */
+        max-width: 350px;
+    }
+
+    #container {
+        /* Minimize spacing to maximize content area
+           Using em units keeps spacing proportional to font size */
+        padding: 0.2em;
+        grid-gap: 0.2em;
+        max-width: 350px;
+    }
+
+    .header-logo {
+        max-width: 85%;
+        max-height: 7vh;
+    }
+
+    nav {
+        padding: 0.2em;
+    }
+
+    nav button {
+        padding: 0.3em;
+    }
+
+    main > div.nes-container {
+        padding: 0.2em;
+    }
+
+    aside {
+        font-size: 0.75em;
+    }
+
+    aside div {
+        padding: 0.2em;
+    }
+
+    aside div img {
+        width: 30px;
+        height: 30px;
+    }
+
+    footer {
+        padding: 0.2em;
+        font-size: 0.75em;
+    }
+}

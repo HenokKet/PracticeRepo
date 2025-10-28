@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, intial-scale=1.0">
+        <title>HTML Table</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>Product Inventory Overview</h1>
+        <table>
+        <thead>
+            <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+            <td>Wireless Mouse</td>
+            <td rowspan="2">Electronics</td>
+            <td>$19.99</td>
+            <td>In Stock</td>
+            </tr>
+            <tr>
+            <td>USB-C Hub</td>
+            <td>$34.99</td>
+            <td>Low Stock</td>
+            </tr>
+            <tr>
+            <td>Ceramic Mug</td>
+            <td>Home &amp; Kitchen</td>
+            <td>$8.50</td>
+            <td>In Stock</td>
+            </tr>
+            <tr>
+            <td>Yoga Mat</td>
+            <td>Fitness</td>
+            <td>$22.00</td>
+            <td>Out of Stock</td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+            <td colspan="4">Total Products: 4</td>
+            </tr>
+        </tfoot>
+        </table>
+    
+    </body>
+
+</html>

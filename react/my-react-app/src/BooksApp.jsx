@@ -5,10 +5,9 @@ function BooksApp() {
   const [books, setBooks] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  // Optional: Google Books API works without a key for basic use,
-  // but you can add one from Google Cloud if you hit limits.
-  const API_KEY = ""; // e.g., "AIzaSyA..."; leave empty if you don't have one
+  
+  //not needed for Google Books API
+  const API_KEY = ""; 
 
   const fetchBooks = () => {
     const q = query.trim();

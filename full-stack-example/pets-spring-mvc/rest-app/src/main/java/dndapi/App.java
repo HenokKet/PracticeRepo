@@ -13,7 +13,7 @@ public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-        System.out.println("Pet REST Api is running? Access the API at http://localhost:8080/api/pharma");
+        System.out.println("Pet REST Api is running? Access the API at http://localhost:8080/api/pets");
     }
 
 }

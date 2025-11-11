@@ -12,7 +12,7 @@ public class UserJdbcRepository {
 
     private final DataSource dataSource;
     // Hardcode the secret key as requested
-    private static final String SECRET_KEY = "carrot";
+    private static final String SECRET_KEY = "1234";
 
     public UserJdbcRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -25,7 +25,7 @@ public class UserJdbcRepository {
         // Use AES_DECRYPT to get the plaintext password for mapping
         final String sql = "SELECT user_id, user_name, user_email, user_role, "
                 + "CAST(AES_DECRYPT(password_aes, ?) AS CHAR) as password "
-                + "FROM user;";
+                + "FROM medUser;";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -46,7 +46,7 @@ public class UserJdbcRepository {
     public User findById(int userId) {
         final String sql = "SELECT user_id, user_name, user_email, user_role, "
                 + "CAST(AES_DECRYPT(password_aes, ?) AS CHAR) as password "
-                + "FROM user WHERE user_id = ?;";
+                + "FROM medUser WHERE user_id = ?;";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -69,7 +69,7 @@ public class UserJdbcRepository {
 
     public User add(User user) {
         // Use AES_ENCRYPT to encrypt the plaintext password before insertion
-        final String sql = "INSERT INTO user (user_name, user_email, user_role, password_aes) "
+        final String sql = "INSERT INTO medUser (user_name, user_email, user_role, password_aes) "
                 + "VALUES (?, ?, ?, AES_ENCRYPT(?, ?));";
 
         try (Connection conn = dataSource.getConnection();
@@ -104,7 +104,7 @@ public class UserJdbcRepository {
 
     public boolean update(User user) {
         // Use AES_ENCRYPT to encrypt the new plaintext password before updating
-        final String sql = "UPDATE user SET "
+        final String sql = "UPDATE medUser SET "
                 + "user_name = ?, "
                 + "user_email = ?, "
                 + "user_role = ?, "
@@ -131,7 +131,7 @@ public class UserJdbcRepository {
     // --- DELETE Operation ---
 
     public boolean deleteById(int userId) {
-        final String sql = "DELETE FROM user WHERE user_id = ?;";
+        final String sql = "DELETE FROM medUser WHERE user_id = ?;";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
 

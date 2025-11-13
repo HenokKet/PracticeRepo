@@ -70,6 +70,30 @@ public class UserJdbcRepository {
         return null;
     }
 
+    public User findByUsername(String Username) {
+        final String sql =
+                "SELECT user_id, user_name, user_email, first_name, last_name, " +
+                        "       CAST(AES_DECRYPT(password_aes, ?) AS CHAR) AS password " +
+                        "FROM medUser " +
+                        "WHERE user_name = ?;";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, SECRET_KEY);
+            statement.setString(2, Username);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return mapRowToUser(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 
     public User add(User user) {
         final String sql =

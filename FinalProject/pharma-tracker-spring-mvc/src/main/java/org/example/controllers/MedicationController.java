@@ -2,7 +2,9 @@ package org.example.controllers;
 
 import org.example.data.MedicationJdbcRepository;
 import org.example.domain.JwtService;
+import org.example.domain.UserService;
 import org.example.models.Medication;
+import org.example.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,22 +18,48 @@ public class MedicationController {
 
     private final MedicationJdbcRepository repository;
     private final JwtService jwtService;
+    private final UserService userService;
+    private User loggedInUser;
 
-    public MedicationController(MedicationJdbcRepository repository, JwtService jwtService) {
+    public MedicationController(MedicationJdbcRepository repository, JwtService jwtService,UserService userService) {
         this.repository = repository;
         this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     // Helper method to validate the JWT and check for 'Bearer ' prefix
+//    private boolean validateToken(String authorizationHeader) {
+//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+//            return false;
+//        }
+//        String token = authorizationHeader.substring(7);
+//        // Placeholder logic; a real JwtService should validate signature/claims/exp.
+//        return token.startsWith("fake-jwt-");
+//    }
     private boolean validateToken(String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             return false;
         }
+        //Extract the Token
         String token = authorizationHeader.substring(7);
-        // Placeholder logic; a real JwtService should validate signature/claims/exp.
+
+        //Extract the user Name
+        String delimiter = ":";
+        String[] parts = token.split(delimiter);
+        String loggedInUserName = "Extraction Failed";
+
+        // Check if the array has enough elements to safely extract the second part (index 1).
+        if (parts.length > 1) {
+            // Extract the element at index 1, which represents the username.
+            loggedInUserName = parts[1].substring(0,parts[1].indexOf("-"));
+            loggedInUser = userService.findByUsername(loggedInUserName);
+        } else {
+            return false;
+        }
+        // Placeholder for real validation logic:
+        // A real JwtService would verify the signature, claims, and expiration here.
         return token.startsWith("fake-jwt-");
     }
-
     // --- ALL endpoints require a valid JWT via the Authorization header ---
 
     @GetMapping
@@ -85,12 +113,11 @@ public class MedicationController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // 401
         }
 
-        // Since ApplicationNo is the PK and not auto-generated, require a positive value.
         if (medication.getApplicationNo() <= 0
                 || medication.getMedicationName() == null || medication.getMedicationName().isBlank()) {
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY); // 422
         }
-
+        medication.setUserId(loggedInUser.getUserId());
         Medication result = repository.add(medication);
         if (result == null) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR); // 500

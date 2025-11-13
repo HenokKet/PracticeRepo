@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import { API_BASE,FDA_BASE } from '../lib/api';
+import { API_BASE} from '../lib/api';
 import '../App.css';
 
 export default function UserMedication() {
@@ -126,12 +126,11 @@ export default function UserMedication() {
     if (fd > ld) return 'First dose must be before (or equal to) last dose.';
     if (
       !form.doseIntervalHours ||
-      isNaN(Number(form.doseIntervalHours)) ||
       Number(form.doseIntervalHours) <= 0
     ) {
       return 'Dose interval (hours) must be a positive number.';
     }
-    if (form.qty === '' || isNaN(Number(form.qty)) || Number(form.qty) < 0) {
+    if (form.qty === '' || Number(form.qty) < 0) {
       return 'Quantity must be a non-negative number.';
     }
     return '';
@@ -202,7 +201,6 @@ export default function UserMedication() {
       });
 
       if (res.ok || res.status === 404) {
-        // update UI
         setRows((list) =>
           list.filter(
             (m) =>
@@ -220,17 +218,15 @@ export default function UserMedication() {
     }
   };
 
-  // ---------- Render ----------
   return (
     <div className="container py-4">
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="m-0">Your Medications</h2>
         <button
-          className="btn btn-primary"
-          type="button"
-          disabled
-          title="Add medication coming soon"
+            className="btn btn-primary"
+            type="button"
+            onClick={() => navigate('/add-medication')}
         >
           Add Medication
         </button>

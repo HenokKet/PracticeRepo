@@ -1,4 +1,3 @@
-// src/components/Schedule.jsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -14,7 +13,6 @@ export default function Schedule() {
   const [err, setErr] = useState('');
   const [saving, setSaving] = useState({}); 
 
-  // --- Auth redirect ---
   useEffect(() => {
     if (!isLoggedIn) navigate('/login', { replace: true });
   }, [isLoggedIn, navigate]);
@@ -46,7 +44,6 @@ export default function Schedule() {
     fetchMeds();
   }, [isLoggedIn, authToken]);
 
-  // --- Helpers to normalize backend shape (camelCase) ---
   const getField = (obj, ...keys) => {
     for (const k of keys) if (obj[k] !== undefined) return obj[k];
     return undefined;
@@ -112,7 +109,6 @@ export default function Schedule() {
     });
   }, [meds]);
 
-  // Only show meds with qty > 0 and not completed
   const activeRows = useMemo(
     () => rows.filter((r) => (r.qty ?? 0) > 0 && r.status !== 'Completed'),
     [rows]
@@ -153,7 +149,6 @@ export default function Schedule() {
       if (decQty === 0) {
         // drop from list (do not push)
       } else {
-        // keep with new qty; preserve original key casing if present
         const updated =
           'qty' in m
             ? { ...m, qty: decQty }
@@ -173,13 +168,11 @@ export default function Schedule() {
       };
     }
 
-    // Optimistic UI
     setSaving((s) => ({ ...s, [id]: true }));
     setMeds(newList);
 
     try {
       if (updatedCamel && updatedCamel.qty > 0) {
-        // Persist update (PUT)
         const res = await fetch(`${API_BASE}/api/pharma`, {
           method: 'PUT',
           headers: {
@@ -193,7 +186,6 @@ export default function Schedule() {
           const text = await res.text().catch(() => '');
           throw new Error(text || `Update failed with status ${res.status}`);
         }
-        // Log after a confirmed successful update
         addDoseLog(id, 1);
       } else {
         // Qty hit 0 → delete on server

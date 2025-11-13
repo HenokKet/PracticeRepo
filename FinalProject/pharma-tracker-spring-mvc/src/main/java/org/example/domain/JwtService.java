@@ -18,4 +18,12 @@ public class JwtService {
         // This simulates a token being generated.
         return "fake-jwt-" + payload + "-" + System.currentTimeMillis();
     }
+
+    public String extractUsername(String token) {
+        // TEMP for your fake-jwt- tokens
+        if (token != null && token.startsWith("fake-jwt-")) {
+            return token.substring("fake-jwt-".length());
+        }
+        return null;
+    }
 }

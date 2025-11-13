@@ -20,7 +20,8 @@ public class MedicationJdbcRepository {
     }
     public List<Medication> findAll() {
         List<Medication> result = new ArrayList<>();
-        final String sql = "SELECT ApplicationNo, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours FROM medications;";
+        final String sql = "SELECT ApplicationNo,user_id, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours " +
+                "FROM medications;";
         try (Connection conn = dataSource.getConnection();
              Statement statement = conn.createStatement();
              ResultSet rs = statement.executeQuery(sql)) {
@@ -35,7 +36,7 @@ public class MedicationJdbcRepository {
     }
 
     public Medication findById(int applicationNo) {
-        final String sql = "SELECT ApplicationNo, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours "
+        final String sql = "SELECT ApplicationNo, user_id, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours "
                 + "FROM medications WHERE ApplicationNo = ?;";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -53,7 +54,7 @@ public class MedicationJdbcRepository {
     }
 
     public Medication findByName(String name) {
-        final String sql = "SELECT ApplicationNo, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours "
+        final String sql = "SELECT ApplicationNo, user_id, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours "
                 + "FROM medications WHERE medication_name = ?;";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -72,17 +73,28 @@ public class MedicationJdbcRepository {
 
     // --- Add New Medication ---
     public Medication add(Medication medication) {
-        final String sql = "INSERT INTO medications (ApplicationNo, medication_name, Qty, firstDosage, LastDosage, dose_interval_hours) "
-                + "VALUES (?, ?, ?, ?, ?, ?);";
+        final String sql = """
+        INSERT INTO medications (
+            ApplicationNo,
+            user_id,
+            medication_name,
+            firstDosage,
+            LastDosage,
+            dose_interval_hours,
+            Qty
+        ) VALUES (?, ?, ?, ?, ?, ?, ?);
+        """;
+
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
 
             statement.setInt(1, medication.getApplicationNo());
-            statement.setString(2, medication.getMedicationName());
-            statement.setInt(3, medication.getQty());
+            statement.setInt(2, medication.getUserId());
+            statement.setString(3, medication.getMedicationName());
             statement.setTimestamp(4, Timestamp.valueOf(medication.getFirstDose()));
             statement.setTimestamp(5, Timestamp.valueOf(medication.getLastDose()));
             statement.setInt(6, medication.getDoseIntervalHours());
+            statement.setInt(7, medication.getQty());
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -94,6 +106,7 @@ public class MedicationJdbcRepository {
         }
         return null;
     }
+
 
     // --- Update Medication ---
     public boolean update(Medication medication) {
@@ -158,13 +171,14 @@ public class MedicationJdbcRepository {
     }
 
     private Medication mapRowToMedication(ResultSet rs) throws SQLException {
-        return new Medication(
-                rs.getString("medication_name"),
-                rs.getInt("ApplicationNo"),
-                rs.getInt("Qty"),
-                rs.getTimestamp("firstDosage").toLocalDateTime(),
-                rs.getTimestamp("LastDosage").toLocalDateTime(),
-                rs.getInt("dose_interval_hours")
-        );
+        Medication medication = new Medication();
+        medication.setUserId(rs.getInt("user_id"));
+        medication.setMedicationName(rs.getString("medication_name"));
+        medication.setApplicationNo(rs.getInt("ApplicationNo"));
+        medication.setQty(rs.getInt("Qty"));
+        medication.setFirstDose(rs.getTimestamp("firstDosage").toLocalDateTime());
+        medication.setLastDose(rs.getTimestamp("LastDosage").toLocalDateTime());
+        medication.setDoseIntervalHours(rs.getInt("dose_interval_hours"));
+        return medication;
     }
 }

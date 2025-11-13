@@ -29,6 +29,10 @@ public class UserService {
         return repository.findById(userId);
     }
 
+    public User findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
     public User add(User user) {
         // Add basic validation (e.g., check for null password) before adding
         if (user.getPassword() == null || user.getPassword().isBlank()) {

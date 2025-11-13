@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard.jsx';
 import Schedule from './components/Schedule.jsx';
 import Activity from './components/Activity.Jsx';
 import UserMedication from './components/UserMedication.jsx';
+import AddMedication from './components/Add.jsx';
 export default function App() {
   const { isLoggedIn, user, logout } = useAuth();
 
@@ -78,6 +79,7 @@ export default function App() {
           <Route path="/schedule" element={<Schedule />} /> 
           <Route path="/activity" element={<Activity />} />
           <Route path="/medications" element={<UserMedication />} />
+          <Route path="/add-medication" element={<AddMedication />} />
         </Routes>
       </div>
     </>

@@ -6,15 +6,14 @@ public class User {
     private int userId;
     private String userName;
     private String userEmail;
-    private String userRole;
-    private String password; // Plaintext password (will be encrypted/decrypted in the repository)
+    private String firstName;
+    private String lastName;
+    private String password; // Store hashed password in practice; don't keep plaintext.
 
-    // Getters and Setters
-
+    // Getters & Setters
     public int getUserId() {
         return userId;
     }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -22,7 +21,6 @@ public class User {
     public String getUserName() {
         return userName;
     }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -30,44 +28,49 @@ public class User {
     public String getUserEmail() {
         return userEmail;
     }
-
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
 
-    public String getUserRole() {
-        return userRole;
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // Optional: toString, equals, hashCode
+    // toString, equals, hashCode
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", userEmail='" + userEmail + '\'' +
-                ", userRole='" + userRole + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return userId == user.userId;
+        if (!(o instanceof User)) return false;
+        User other = (User) o;
+        return userId == other.userId;
     }
 
     @Override
@@ -75,3 +78,4 @@ public class User {
         return Objects.hash(userId);
     }
 }
+

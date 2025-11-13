@@ -13,7 +13,7 @@ public class JwtService {
     public String generateToken(User user) {
         // In a real implementation, you'd create a secure JWT here.
         // For demonstration, we'll return a simple encoded string.
-        String payload = user.getUserId() + ":" + user.getUserName() + ":" + user.getUserRole();
+        String payload = user.getUserId() + ":" + user.getUserName();
 
         // This simulates a token being generated.
         return "fake-jwt-" + payload + "-" + System.currentTimeMillis();

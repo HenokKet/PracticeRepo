@@ -37,7 +37,7 @@ public class UserController {
         String token = jwtService.generateToken(user);
 
         // Return the token, username, and role in the response DTO
-        JwtResponse response = new JwtResponse(token, user.getUserName(), user.getUserRole());
+        JwtResponse response = new JwtResponse(token, user.getUserName(),user.getFirstName(), user.getLastName());
 
         return new ResponseEntity<>(response, HttpStatus.OK); // 200
     }

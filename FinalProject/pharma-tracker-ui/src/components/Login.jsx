@@ -1,4 +1,3 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -13,7 +12,8 @@ function Login() {
     username: '',
     password: '',
     email: '',
-    role: 'user' // Default role for registration
+    firstName: '',
+    lastName: ''
   });
   const [status, setStatus] = useState({ loading: false, error: '', success: '' });
 
@@ -27,7 +27,6 @@ function Login() {
     setStatus({ loading: true, error: '', success: '' });
     try {
       await login(formData.username, formData.password);
-      // On success, go to dashboard
       navigate('/dashboard', { replace: true });
     } catch (err) {
       setStatus({
@@ -52,7 +51,8 @@ function Login() {
           userName: formData.username,
           password: formData.password,
           userEmail: formData.email,
-          userRole: formData.role
+          firstName: formData.firstName,
+          lastName: formData.lastName
         }),
       });
 
@@ -60,11 +60,8 @@ function Login() {
         throw new Error(`Registration failed with status ${response.status}`);
       }
 
-      // Registration successful -> auto-login
       setStatus({ loading: false, error: '', success: 'Registration successful! Logging you in...' });
       await login(formData.username, formData.password);
-
-      // After auto-login, go to dashboard
       navigate('/dashboard', { replace: true });
 
     } catch (err) {
@@ -76,14 +73,23 @@ function Login() {
     }
   };
 
+  const isRegisterDisabled =
+    !formData.username ||
+    !formData.password ||
+    !formData.email ||
+    !formData.firstName ||
+    !formData.lastName;
+
   return (
     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', background: '#f8f9fa' }}>
-      <div className="card shadow" style={{ width: '400px' }}>
+      <div className="card shadow" style={{ width: '420px' }}>
         <div className="card-header bg-primary text-white text-center">
-          <h2>{isLoginView ? 'Login' : 'Register'}</h2>
+          <h2 className="m-0">{isLoginView ? 'Login' : 'Register'}</h2>
         </div>
+
         <div className="card-body">
           <form onSubmit={isLoginView ? handleLoginSubmit : handleRegisterSubmit}>
+            {/* Username */}
             <div className="mb-3">
               <label htmlFor="username" className="form-label">Username</label>
               <input
@@ -98,22 +104,55 @@ function Login() {
               />
             </div>
 
+            {/* Registration-only fields */}
             {!isLoginView && (
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  disabled={status.loading}
-                />
-              </div>
+              <>
+                <div className="row">
+                  <div className="col-12 col-md-6 mb-3">
+                    <label htmlFor="firstName" className="form-label">First Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      required
+                      disabled={status.loading}
+                    />
+                  </div>
+                  <div className="col-12 col-md-6 mb-3">
+                    <label htmlFor="lastName" className="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      required
+                      disabled={status.loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={status.loading}
+                  />
+                </div>
+              </>
             )}
 
+            {/* Password */}
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
               <input
@@ -135,7 +174,7 @@ function Login() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={status.loading || (isLoginView && (!formData.username || !formData.password))}
+                disabled={status.loading || (isLoginView ? (!formData.username || !formData.password) : isRegisterDisabled)}
               >
                 {status.loading ? (
                   <>
@@ -149,6 +188,7 @@ function Login() {
             </div>
           </form>
         </div>
+
         <div className="card-footer text-center">
           <button
             className="btn btn-link"

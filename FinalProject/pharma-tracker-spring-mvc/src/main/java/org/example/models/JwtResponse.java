@@ -3,12 +3,14 @@ package org.example.models;
 public class JwtResponse {
     private final String jwt;
     private final String username;
-    private final String role;
+    private String firstName;
+    private String lastName;
 
-    public JwtResponse(String jwt, String username, String role) {
+    public JwtResponse(String jwt, String username, String firstName, String lastName) {
         this.jwt = jwt;
         this.username = username;
-        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     // Getters
@@ -21,7 +23,9 @@ public class JwtResponse {
         return username;
     }
 
-    public String getRole() {
-        return role;
-    }
+    public String getFirstName() {return firstName; }
+
+    public String getLastName() { return lastName;}
+
+
 }

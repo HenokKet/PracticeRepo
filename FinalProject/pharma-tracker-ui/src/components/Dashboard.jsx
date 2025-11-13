@@ -17,17 +17,16 @@ export default function Dashboard() {
   return (
     <div className="container py-4">
       {/* Heading */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="m-0">Dashboard</h2>
-        <span className="text-secondary">
-          Welcome, <strong>{user?.username ?? 'User'}</strong>
-          {user?.role ? ` (${user.role})` : ''}
-        </span>
-      </div>
+        <div className="d-flex flex-column align-items-stretch mb-3">
+            <h2 className="mb-2 text-center w-100">
+                Welcome, {user.firstName}!
+            </h2>
+            <h4 className="mb-2 text-start">Dashboard</h4>
+        </div>
 
       {/* Info banner */}
       <div className="alert alert-info">
-        You’re signed in. Use the cards below to jump into common tasks.
+        You’re signed in. Scroll down to jump into common tasks.
       </div>
 
       {/* Cards */}
@@ -39,7 +38,7 @@ export default function Dashboard() {
               <p className="text-secondary mb-3">
                 See your upcoming medication and schedule.
               </p>
-              <button className="btn btn-primary" disabled>
+              <button className="btn btn-primary" onClick={() => navigate('/schedule')}>
                 View Schedule
               </button>
             </div>
@@ -53,7 +52,7 @@ export default function Dashboard() {
               <p className="text-secondary mb-3">
                 Browse, add, or edit your medications.
               </p>
-              <button className="btn btn-outline-primary" disabled>
+              <button className="btn btn-outline-primary" onClick={() => navigate('/medications')}>
                 Open List
               </button>
             </div>
@@ -65,9 +64,9 @@ export default function Dashboard() {
             <div className="card-body">
               <h5 className="card-title mb-2">Recent Activity</h5>
               <p className="text-secondary mb-3">
-                Review your recent doses and updates.
+                Review your recent doses.
               </p>
-              <button className="btn btn-outline-secondary" disabled>
+              <button className="btn btn-outline-secondary" onClick={() => navigate('/activity')}>
                 View Activity
               </button>
             </div>

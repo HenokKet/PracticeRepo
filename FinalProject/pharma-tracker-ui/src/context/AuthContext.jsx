@@ -1,74 +1,69 @@
 // src/context/AuthContext.jsx
+// src/context/AuthContext.jsx
 import React, { createContext, useContext, useState } from 'react';
-import { API_BASE } from '../lib/api'; // Assuming you have this base URL defined
+import { API_BASE } from '../lib/api';
 
-// 1. Create the Context object
 export const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
 
-// 2. Create the Custom Hook for easy access
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
-
-// 3. Create the Provider component
 export const AuthProvider = ({ children }) => {
-    // Stores the JWT string returned from the backend
-    const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || null);
-    // Stores the user details (username, role)
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
+  const [authToken, setAuthToken] = useState(localStorage.getItem('authToken') || null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
-    // Function to handle the login API call
-    const login = async (username, password) => {
-        const loginUrl = `${API_BASE}/api/user/login`;
-        
-        try {
-            const response = await fetch(loginUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
+  const login = async (username, password) => {
+    const loginUrl = `${API_BASE}/api/user/login`;
+    try {
+      const response = await fetch(loginUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-            if (!response.ok) {
-                // Return a specific error if credentials fail (e.g., 401)
-                throw new Error('Login failed. Check username and password.');
-            }
+      if (!response.ok) {
+        throw new Error('Login failed. Check username and password.');
+      }
 
-            const data = await response.json();
-            
-            // Assuming the JWT response is { jwt: "...", username: "...", role: "..." }
-            setAuthToken(data.jwt);
-            setUser({ username: data.username, role: data.role });
+      const data = await response.json();
 
-            // Store token and user data in local storage for persistence
-            localStorage.setItem('authToken', data.jwt);
-            localStorage.setItem('user', JSON.stringify({ username: data.username, role: data.role }));
+      // 🔹 Ensure these fields match the backend JwtResponse
+      const userObj = {
+        username: data.userName ?? data.username,
+        firstName: data.firstName ?? '',
+        lastName: data.lastName ?? '',
+      };
 
-            return true; // Login successful
-            
-        } catch (error) {
-            console.error("Login API Error:", error);
-            // Clear any old stored data on failure
-            logout(); 
-            throw error; // Re-throw for the component to handle the UI error message
-        }
-    };
+      setAuthToken(data.jwt);
+      setUser(userObj);
 
-    // Function to handle logout
-    const logout = () => {
-        setAuthToken(null);
-        setUser(null);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
-    };
+      localStorage.setItem('authToken', data.jwt);
+      localStorage.setItem('user', JSON.stringify(userObj));
 
-    // The value provided by the context
-    const value = {
+      return true;
+    } catch (error) {
+      console.error('Login API Error:', error);
+      logout();
+      throw error;
+    }
+  };
+
+  const logout = () => {
+    setAuthToken(null);
+    setUser(null);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
         authToken,
         user,
-        isLoggedIn: !!authToken, // Boolean flag for quick check
+        isLoggedIn: !!authToken,
         login,
         logout,
-    };
-
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };

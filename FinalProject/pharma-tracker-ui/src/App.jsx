@@ -5,7 +5,9 @@ import { useAuth } from './context/AuthContext.jsx';
 import Home from './components/Home.jsx';
 import Login from './components/Login.jsx';
 import Dashboard from './components/Dashboard.jsx';
-
+import Schedule from './components/Schedule.jsx';
+import Activity from './components/Activity.Jsx';
+import UserMedication from './components/UserMedication.jsx';
 export default function App() {
   const { isLoggedIn, user, logout } = useAuth();
 
@@ -57,7 +59,6 @@ export default function App() {
               <>
                 <span className="text-white-50 small">
                   Logged in as: <strong>{user?.username ?? 'User'}</strong>
-                  {user?.role ? ` (${user.role})` : ''}
                 </span>
                 <button className="btn btn-sm btn-outline-light" onClick={logout}>
                   Logout
@@ -74,6 +75,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/schedule" element={<Schedule />} /> 
+          <Route path="/activity" element={<Activity />} />
+          <Route path="/medications" element={<UserMedication />} />
         </Routes>
       </div>
     </>

@@ -123,17 +123,38 @@ public class MedicationJdbcRepository {
     }
 
     public boolean deleteById(int applicationNo) {
-        final String sql = "DELETE FROM medications WHERE ApplicationNo = ?;";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
+        final String deleteLogsSql =
+                "DELETE FROM medicationlog WHERE ApplicationNo = ?;";
+        final String deleteMedSql =
+                "DELETE FROM medications WHERE ApplicationNo = ?;";
 
-            statement.setInt(1, applicationNo);
-            return statement.executeUpdate() > 0;
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
 
+            try (PreparedStatement deleteLogs = conn.prepareStatement(deleteLogsSql);
+                 PreparedStatement deleteMed = conn.prepareStatement(deleteMedSql)) {
+
+                // 1) delete logs
+                deleteLogs.setInt(1, applicationNo);
+                deleteLogs.executeUpdate();
+
+                // 2) delete medication
+                deleteMed.setInt(1, applicationNo);
+                int rows = deleteMed.executeUpdate();
+
+                conn.commit();
+                return rows > 0;
+            } catch (SQLException ex) {
+                conn.rollback();
+                ex.printStackTrace();
+                return false;
+            } finally {
+                conn.setAutoCommit(true);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     private Medication mapRowToMedication(ResultSet rs) throws SQLException {

@@ -1,4 +1,5 @@
 package org.example.data;
+
 import org.example.models.User;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class UserJdbcRepository {
 
     private final DataSource dataSource;
+
     // Hardcode the secret key as requested
     private static final String SECRET_KEY = "1234";
 
@@ -22,10 +24,11 @@ public class UserJdbcRepository {
 
     public List<User> findAll() {
         ArrayList<User> result = new ArrayList<>();
-        // Use AES_DECRYPT to get the plaintext password for mapping
-        final String sql = "SELECT user_id, user_name, user_email, user_role, "
-                + "CAST(AES_DECRYPT(password_aes, ?) AS CHAR) as password "
-                + "FROM medUser;";
+
+        final String sql =
+                "SELECT user_id, user_name, user_email, first_name, last_name, " +
+                        "       CAST(AES_DECRYPT(password_aes, ?) AS CHAR) AS password " +
+                        "FROM medUser;";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -44,9 +47,11 @@ public class UserJdbcRepository {
     }
 
     public User findById(int userId) {
-        final String sql = "SELECT user_id, user_name, user_email, user_role, "
-                + "CAST(AES_DECRYPT(password_aes, ?) AS CHAR) as password "
-                + "FROM medUser WHERE user_id = ?;";
+        final String sql =
+                "SELECT user_id, user_name, user_email, first_name, last_name, " +
+                        "       CAST(AES_DECRYPT(password_aes, ?) AS CHAR) AS password " +
+                        "FROM medUser " +
+                        "WHERE user_id = ?;";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -65,22 +70,21 @@ public class UserJdbcRepository {
         return null;
     }
 
-    // --- CREATE Operation ---
 
     public User add(User user) {
-        // Use AES_ENCRYPT to encrypt the plaintext password before insertion
-        final String sql = "INSERT INTO medUser (user_name, user_email, user_role, password_aes) "
-                + "VALUES (?, ?, ?, AES_ENCRYPT(?, ?));";
+        final String sql =
+                "INSERT INTO medUser (user_name, user_email, first_name, last_name, password_aes) " +
+                        "VALUES (?, ?, ?, ?, AES_ENCRYPT(?, ?));";
 
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql,
-                     Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getUserEmail());
-            statement.setString(3, user.getUserRole());
-            statement.setString(4, user.getPassword()); // Plaintext password
-            statement.setString(5, SECRET_KEY);
+            statement.setString(3, user.getFirstName());
+            statement.setString(4, user.getLastName());
+            statement.setString(5, user.getPassword()); // plaintext here; encrypted by AES_ENCRYPT
+            statement.setString(6, SECRET_KEY);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted <= 0) {
@@ -103,23 +107,25 @@ public class UserJdbcRepository {
     // --- UPDATE Operation ---
 
     public boolean update(User user) {
-        // Use AES_ENCRYPT to encrypt the new plaintext password before updating
-        final String sql = "UPDATE medUser SET "
-                + "user_name = ?, "
-                + "user_email = ?, "
-                + "user_role = ?, "
-                + "password_aes = AES_ENCRYPT(?, ?) "
-                + "WHERE user_id = ?;";
+        final String sql =
+                "UPDATE medUser SET " +
+                        "  user_name = ?, " +
+                        "  user_email = ?, " +
+                        "  first_name = ?, " +
+                        "  last_name = ?, " +
+                        "  password_aes = AES_ENCRYPT(?, ?) " +
+                        "WHERE user_id = ?;";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
 
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getUserEmail());
-            statement.setString(3, user.getUserRole());
-            statement.setString(4, user.getPassword()); // Plaintext password
-            statement.setString(5, SECRET_KEY);
-            statement.setInt(6, user.getUserId());
+            statement.setString(3, user.getFirstName());
+            statement.setString(4, user.getLastName());
+            statement.setString(5, user.getPassword()); // plaintext; encrypted in SQL
+            statement.setString(6, SECRET_KEY);
+            statement.setInt(7, user.getUserId());
 
             return statement.executeUpdate() > 0;
         } catch (SQLException ex) {
@@ -132,12 +138,13 @@ public class UserJdbcRepository {
 
     public boolean deleteById(int userId) {
         final String sql = "DELETE FROM medUser WHERE user_id = ?;";
+
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
 
             statement.setInt(1, userId);
-
             return statement.executeUpdate() > 0;
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -151,9 +158,9 @@ public class UserJdbcRepository {
         user.setUserId(rs.getInt("user_id"));
         user.setUserName(rs.getString("user_name"));
         user.setUserEmail(rs.getString("user_email"));
-        user.setUserRole(rs.getString("user_role"));
-        // The password column in the result set is a plaintext string
-        user.setPassword(rs.getString("password"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setPassword(rs.getString("password")); // plaintext obtained via AES_DECRYPT alias
         return user;
     }
 }

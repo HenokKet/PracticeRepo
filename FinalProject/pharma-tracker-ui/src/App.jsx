@@ -9,20 +9,33 @@ import Schedule from './components/Schedule.jsx';
 import Activity from './components/Activity.Jsx';
 import UserMedication from './components/UserMedication.jsx';
 import AddMedication from './components/Add.jsx';
+
+/**
+ * App Component
+ * 
+ * Root component that provides application-wide navigation and routing.
+ * Features:
+ * - Responsive Bootstrap navbar with authentication-aware navigation
+ * - Dynamic nav links based on login state
+ * - User status display and logout functionality
+ * - Route definitions for all application pages
+ */
 export default function App() {
   const { isLoggedIn, user, logout } = useAuth();
 
   return (
     <>
+      {/* Top Navigation Bar */}
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
-          {/* Brand */}
+          {/* Brand/Logo */}
           <NavLink to="/" className="navbar-brand fw-semibold mb-0">
             Medic Alert Tracker
           </NavLink>
 
-          {/* Left-side nav */}
+          {/* Left-side Navigation Links */}
           <ul className="navbar-nav flex-row gap-2">
+            {/* Home link - always visible */}
             <li className="nav-item">
               <NavLink
                 to="/"
@@ -33,6 +46,7 @@ export default function App() {
               </NavLink>
             </li>
 
+            {/* Conditional navigation: Dashboard for logged-in users, Login for guests */}
             {isLoggedIn ? (
               <li className="nav-item">
                 <NavLink
@@ -54,13 +68,15 @@ export default function App() {
             )}
           </ul>
 
-          {/* Right side: auth status/actions */}
+          {/* Right Side: User Info and Logout */}
           <div className="ms-auto d-flex align-items-center gap-2">
             {isLoggedIn && (
               <>
+                {/* Display current user's username */}
                 <span className="text-white-50 small">
                   Logged in as: <strong>{user?.username ?? 'User'}</strong>
                 </span>
+                {/* Logout button triggers auth context logout */}
                 <button className="btn btn-sm btn-outline-light" onClick={logout}>
                   Logout
                 </button>
@@ -70,13 +86,16 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Routed content */}
+      {/* Main Content Area with Routes */}
       <div className="container py-4">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          
+          {/* Protected Routes - Components handle auth redirects internally */}
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/schedule" element={<Schedule />} /> 
+          <Route path="/schedule" element={<Schedule />} />
           <Route path="/activity" element={<Activity />} />
           <Route path="/medications" element={<UserMedication />} />
           <Route path="/add-medication" element={<AddMedication />} />
@@ -85,4 +104,3 @@ export default function App() {
     </>
   );
 }
-

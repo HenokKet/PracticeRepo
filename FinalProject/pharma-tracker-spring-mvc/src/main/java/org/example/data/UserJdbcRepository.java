@@ -162,18 +162,16 @@ public class UserJdbcRepository {
 
     public boolean deleteById(int userId) {
         final String sql = "DELETE FROM medUser WHERE user_id = ?;";
-
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement statement = conn.prepareStatement(sql)) {
-
+        try (Connection conn = dataSource.getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, userId);
             return statement.executeUpdate() > 0;
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return false;
     }
+
+
 
     // --- Helper Method ---
 

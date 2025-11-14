@@ -3,11 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import '../App.css';
 
+/**
+ * Dashboard Component
+ * 
+ * Main landing page for authenticated users.
+ * Displays a personalized welcome message and provides quick navigation
+ * to key features: medication schedule, medication list, and activity history.
+ */
 export default function Dashboard() {
   const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if not authenticated
+  /**
+   * Redirect unauthenticated users to login page
+   * Ensures dashboard is only accessible to logged-in users
+   */
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/login', { replace: true });
@@ -16,21 +26,22 @@ export default function Dashboard() {
 
   return (
     <div className="container py-4">
-      {/* Heading */}
-        <div className="d-flex flex-column align-items-stretch mb-3">
-            <h2 className="mb-2 text-center w-100">
-                Welcome, {user.firstName}!
-            </h2>
-            <h4 className="mb-2 text-start">Dashboard</h4>
-        </div>
-
-      {/* Info banner */}
-      <div className="alert alert-info">
-        You’re signed in. Scroll down to jump into common tasks.
+      {/* Page Heading with personalized greeting */}
+      <div className="d-flex flex-column align-items-stretch mb-3">
+        <h2 className="mb-2 text-center w-100">
+          {user?.firstName ? `Welcome, ${user.firstName}!` : 'Welcome!'}
+        </h2>
+        <h4 className="mb-2 text-start">Dashboard</h4>
       </div>
 
-      {/* Cards */}
+      {/* Info banner confirming authentication status */}
+      <div className="alert alert-info">
+        You're signed in. Scroll down to jump into common tasks.
+      </div>
+
+      {/* Navigation Cards - Quick access to main features */}
       <div className="row g-3">
+        {/* Schedule Card - View upcoming medication doses */}
         <div className="col-12 col-md-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
@@ -45,6 +56,7 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Medications Card - Manage medication list */}
         <div className="col-12 col-md-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
@@ -59,6 +71,7 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Activity Card - View dose history */}
         <div className="col-12 col-md-4">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
